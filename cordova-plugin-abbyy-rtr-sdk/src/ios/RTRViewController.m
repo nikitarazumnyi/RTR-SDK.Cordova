@@ -79,6 +79,34 @@ void performBlockOnMainThread(NSInteger delay, void(^block)())
 	_currentStabilityStatus = RTRResultStabilityNotReady;
 }
 
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
+{
+	NSArray* orientations = NSBundle.mainBundle.infoDictionary[@"UISupportedInterfaceOrientations"];
+	UIInterfaceOrientationMask orientationMask = 0;
+
+	if(orientations != nil) {
+
+		for(NSString* orientationString in orientations) {
+			if([orientationString isEqualToString:@"UIInterfaceOrientationPortrait"]) {
+				orientationMask |= UIInterfaceOrientationMaskPortrait;
+			} else if([orientationString isEqualToString:@"UIInterfaceOrientationPortraitUpsideDown"]) {
+				orientationMask |= UIInterfaceOrientationMaskPortraitUpsideDown;
+			} else if([orientationString isEqualToString:@"UIInterfaceOrientationLandscapeLeft"]) {
+				orientationMask |= UIInterfaceOrientationMaskLandscapeLeft;
+			} else if([orientationString isEqualToString:@"UIInterfaceOrientationLandscapeRight"]) {
+				orientationMask |= UIInterfaceOrientationMaskLandscapeRight;
+			}
+		}
+
+	}
+	// default
+	if(orientationMask == 0) {
+		orientationMask |= UIInterfaceOrientationMaskPortrait;
+	}
+
+	return orientationMask;
+}
+
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
 	[super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
